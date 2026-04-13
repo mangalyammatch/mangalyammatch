@@ -25,22 +25,25 @@ exports.register = async (req, res) => {
     console.log('[AUTH] Hashing password...');
     const password_hash = await bcrypt.hash(password, 10);
 
-    // Create User and Profile in a transaction (with increased timeout for production)
-    console.log('[AUTH] Starting database transaction...');
-    const newUser = await prisma.$transaction(async (tx) => {
-      const user = await tx.user.create({
-        data: {
-          email,
-          password_hash,
-          role: 'USER',
-          status: 'PENDING',
-          isVerified: false,
-          otp: Math.floor(100000 + Math.random() * 900000).toString(),
-          otpExpires: new Date(Date.now() + 10 * 60 * 1000) // 10 mins
-        }
-      });
-      
-      await tx.profile.create({
+    // Step 1: Create user
+    console.log('[AUTH] Creating user...');
+    const user = await prisma.user.create({
+      data: {
+        email,
+        password_hash,
+        role: 'USER',
+        status: 'PENDING',
+        isVerified: false,
+        otp: Math.floor(100000 + Math.random() * 900000).toString(),
+        otpExpires: new Date(Date.now() + 10 * 60 * 1000),
+      }
+    });
+    console.log(`[AUTH] User created: ${user.id}`);
+
+    // Step 2: Create profile (sequential, no transaction needed)
+    try {
+      console.log('[AUTH] Creating profile...');
+      await prisma.profile.create({
         data: {
           userId: user.id,
           name: profileData?.name || email.split('@')[0],
@@ -48,25 +51,25 @@ exports.register = async (req, res) => {
           gender: profileData?.gender || 'Unknown',
         }
       });
-      
-      return user;
-    }, {
-      timeout: 20000 // 20 second timeout for production robustness
-    });
-
-    console.log(`[AUTH] User created in DB. Sending OTP email to ${newUser.email}...`);
-    
-    // Send Real Email (Don't await it if it's slow, or await it with its own catch)
-    try {
-      const profile = await prisma.profile.findUnique({ where: { userId: newUser.id } });
-      await sendOTPEmail(newUser.email, newUser.otp, profile.name || 'User');
-      console.log('[AUTH] OTP Email sent successfully.');
-    } catch (emailErr) {
-      console.error('[AUTH] Non-critical email error during registration:', emailErr);
-      // We don't fail registration just because email is slow, but we log it.
+      console.log('[AUTH] Profile created successfully.');
+    } catch (profileErr) {
+      // Clean up the user if profile creation fails
+      console.error('[AUTH] Profile creation failed, cleaning up user:', profileErr.message);
+      await prisma.user.delete({ where: { id: user.id } }).catch(() => {});
+      throw profileErr;
     }
 
-    const token = generateToken(newUser.id, newUser.role);
+    // Step 3: Send email (non-blocking if it fails)
+    console.log(`[AUTH] Sending OTP to ${email}...`);
+    try {
+      const profile = await prisma.profile.findUnique({ where: { userId: user.id } });
+      await sendOTPEmail(user.email, user.otp, profile?.name || 'User');
+      console.log('[AUTH] OTP Email sent successfully.');
+    } catch (emailErr) {
+      console.error('[AUTH] Email send failed (non-critical):', emailErr.message);
+    }
+
+    const token = generateToken(user.id, user.role);
     res.status(201).json({ 
       message: 'Registration successful. Please verify your email.',
       token,
@@ -74,10 +77,9 @@ exports.register = async (req, res) => {
     });
 
   } catch (error) {
-    console.error('CRITICAL: Registration Error breakdown:', {
+    console.error('CRITICAL: Registration Error:', {
       message: error.message,
-      stack: error.stack,
-      code: error.code // Useful for Prisma errors
+      code: error.code,
     });
     res.status(500).json({ error: 'Internal server error during registration. Please check server logs.' });
   }
