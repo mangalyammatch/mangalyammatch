@@ -1,0 +1,129 @@
+.admin-page {
+  background: #f4f7f6;
+  min-height: 100vh;
+}
+
+.admin-content {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.admin-header {
+  margin-bottom: 2rem;
+}
+
+.admin-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.stat-card {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.admin-users-section {
+  padding: 0;
+}
+
+.section-header {
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+}
+
+.search-box input {
+  padding: 0.6rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  width: 250px;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table th {
+  text-align: left;
+  padding: 1rem 1.5rem;
+  background: #fafafa;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  border-bottom: 1px solid #eee;
+}
+
+.admin-table td {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #f9f9f9;
+  font-size: 0.95rem;
+}
+
+.user-info-cell {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-info-cell span {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.status-pill {
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.status-pill.active { background: #e8f5e9; color: #2e7d32; }
+.status-pill.pending { background: #fff3e0; color: #ef6c00; }
+.status-pill.blocked { background: #ffeeb2; color: #b71c1c; }
+
+.verified-check { color: #2e7d32; font-weight: 700; }
+
+.row-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.btn-verify, .btn-block, .btn-activate, .btn-delete {
+  background: none;
+  border: 1px solid #ddd;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.btn-verify { border-color: var(--primary); color: var(--primary); }
+.btn-verify:hover { background: var(--primary); color: white; }
+
+.btn-block { color: #d32f2f; }
+.btn-block:hover { background: #d32f2f; color: white; }
+
+.btn-activate { border-color: #2e7d32; color: #2e7d32; }
+.btn-activate:hover { background: #2e7d32; color: white; }

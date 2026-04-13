@@ -1,0 +1,26 @@
+# Node and Build
+node_modules/
+dist/
+build/
+.DS_Store
+
+# Environment and Secrets (CRITICAL)
+.env
+.env.local
+.env.*
+*.log
+backend/logs.txt
+
+# Database and Persistence
+backend/prisma/dev.db
+backend/prisma/dev.db-journal
+backend/uploads/
+
+# IDE and System
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

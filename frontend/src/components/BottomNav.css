@@ -1,0 +1,56 @@
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0.75rem 0.5rem;
+  border-top: 1px solid var(--border-color);
+  z-index: 2000;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: var(--text-muted);
+  gap: 0.25rem;
+  flex: 1;
+  transition: all 0.3s ease;
+}
+
+.nav-icon {
+  font-size: 1.4rem;
+}
+
+.nav-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.nav-item.active {
+  color: var(--primary);
+}
+
+.nav-item.active .nav-icon {
+  transform: scale(1.1);
+}
+
+@media (min-width: 769px) {
+  .bottom-nav {
+    display: none;
+  }
+}
+
+/* iOS safe area padding */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .bottom-nav {
+    padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));
+  }
+}

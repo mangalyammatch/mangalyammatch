@@ -1,0 +1,108 @@
+.pricing-page {
+  background: #f8f9fa;
+  min-height: 100vh;
+}
+
+.pricing-content {
+  max-width: 1100px;
+  margin: 3rem auto;
+  padding: 0 1rem;
+  text-align: center;
+}
+
+.pricing-header {
+  margin-bottom: 4rem;
+}
+
+.pricing-header h1 {
+  font-size: 2.8rem;
+  margin-bottom: 1rem;
+}
+
+.pricing-header p {
+  color: var(--text-muted);
+  font-size: 1.2rem;
+}
+
+.plans-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.plan-card {
+  padding: 3rem 2rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.plan-card:hover {
+  transform: translateY(-10px);
+}
+
+.plan-card.popular {
+  border: 2px solid var(--primary);
+  box-shadow: 0 20px 40px rgba(var(--primary-rgb), 0.1);
+}
+
+.popular-tag {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--primary);
+  color: white;
+  padding: 0.5rem 1.5rem;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+.plan-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.plan-price {
+  margin-bottom: 2rem;
+}
+
+.plan-price .currency {
+  font-size: 1.5rem;
+  font-weight: 700;
+  vertical-align: top;
+  margin-right: 0.2rem;
+}
+
+.plan-price .amount {
+  font-size: 3.5rem;
+  font-weight: 800;
+}
+
+.plan-price .period {
+  color: var(--text-muted);
+  font-size: 1rem;
+  margin-left: 0.5rem;
+}
+
+.plan-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2.5rem;
+  text-align: left;
+  flex: 1;
+}
+
+.plan-features li {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f1f1f1;
+  font-size: 0.95rem;
+  color: var(--text-main);
+}
+
+.plan-features li:last-child {
+  border-bottom: none;
+}
